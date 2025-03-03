@@ -1,0 +1,51 @@
+.notifier-click-to-chat-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 99999999;
+}
+.notifier-click-to-chat-btn a {
+  text-decoration: none !important;
+  display: inline-block;
+  outline: none !important;
+}
+.notifier-click-to-chat-btn a:hover, .notifier-click-to-chat-btn a:focus {
+  text-decoration: none !important;
+}
+.notifier-click-to-chat-btn.notifier-click-to-chat-style-3 a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e4e4e4;
+  color: #7f7d7d;
+  padding: 0 12px;
+  border-radius: 25px;
+  font-size: 13px;
+  line-height: 32px;
+}
+.notifier-click-to-chat-btn.notifier-click-to-chat-style-4 a {
+  display: flex;
+  padding: 0 2rem;
+  letter-spacing: 0.5px;
+  transition: 0.2s ease-out;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  height: 36px;
+  line-height: 36px;
+  vertical-align: middle;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  box-sizing: inherit;
+  background-color: #26a69a;
+  color: #fff;
+}
+.notifier-click-to-chat-btn.notifier-click-to-chat-style-custom img {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+  max-height: 150px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
