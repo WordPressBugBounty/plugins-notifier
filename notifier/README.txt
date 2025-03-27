@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, whatsapp api, woocommerce whatsapp, whatsapp integration, whatsapp widget
 Requires at least: 5.0
 Tested up to: 6.7
-Stable tag: 2.7.3
+Stable tag: 2.7.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -135,6 +135,9 @@ And a lot more. Visit [WANotifier.com](https://wanotifier.com) to learn more.
 4. Follow the instructions on the screen to complete your setup.
 
 == Changelog ==
+= 2.7.4 - 2025-03-27 =
+fix: FATAL error when Woocommerce is not installed
+
 = 2.7.3 - 2025-02-12 =
 fix: FATAL error related to WC order meta and checkout and cart related bugs
 

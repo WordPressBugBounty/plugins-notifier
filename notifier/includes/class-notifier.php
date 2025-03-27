@@ -23,7 +23,7 @@ class Notifier {
 	 * Define Constants.
 	 */
 	private function define_constants() {
-		$this->define( 'NOTIFIER_VERSION', '2.7.3' );
+		$this->define( 'NOTIFIER_VERSION', '2.7.4' );
 		$this->define( 'NOTIFIER_NAME', 'notifier' );
 		$this->define( 'NOTIFIER_PREFIX', 'notifier_' );
 		$this->define( 'NOTIFIER_URL', trailingslashit( plugins_url( '', dirname(__FILE__) ) ) );
@@ -207,7 +207,7 @@ class Notifier {
 		    );
 		}
 
-    	if ('yes' === get_option('notifier_enable_abandonment_cart_tracking', 'no') && is_checkout()) {
+    	if ('yes' === get_option('notifier_enable_abandonment_cart_tracking', 'no') && class_exists('WooCommerce') && is_checkout() ) {
 	    	wp_enqueue_script(
 	    		NOTIFIER_NAME . '-js',
 	    		NOTIFIER_URL . 'assets/js/script.js',
