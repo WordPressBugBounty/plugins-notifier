@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: WANotifier - Send Message Notifications Using Cloud API
+ * Plugin Name: Notifier - Send Message Notifications Using Official API
  * Plugin URI: https://wordpress.org/plugins/notifier/
  * Description: Send WhatsApp notifications using WhatsApp API for Woocommerce orders & abandoned carts and form submissions for Gravity Forms, Contact Form 7 & more.
- * Version: 2.7.4
+ * Version: 2.7.5
  * Author: WANotifier.com
  * Author URI: https://wanotifier.com
  * Text Domain: notifier
