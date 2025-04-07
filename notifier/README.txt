@@ -1,7 +1,7 @@
-=== Notifier - Send Message Notifications Using Official API ===
+=== Notifier - Send Message Notifications Using Business API ===
 Contributors: wanotifier
 Donate link: https://wanotifier.com
-Tags: whatsapp, whatsapp api, woocommerce whatsapp, whatsapp integration, whatsapp widget, whatsapp business api, whatsapp notification
+Tags: whatsapp api, whatsapp integration, whatsapp notification, woocommerce whatsapp, whatsapp
 Requires at least: 5.0
 Tested up to: 6.7
 Stable tag: 2.7.5
@@ -9,30 +9,30 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrate WhatsApp API to send WhatsApp notifications for Woocommerce orders, form submissions for Contact Form 7, Gravity Forms, WPForms & more.
+Integrate WhatsApp API with WordPress to send WhatsApp notifications from Woocommerce, Contact Form 7, Gravity Forms, WPForms & more.
 
 == Description ==
-**Send WhatsApp notifications** for Woocommerce orders, abadoned cart recovery, form submissions from _Contact Form 7_, _Gravity Forms_, _WPForms_ & other popular form plugins and for a lot of other such actions using the **official WhatsApp API**.
+**Integrate WhatsApp API with WordPress** to send WhatsApp notifications for Woocommerce orders, abadoned cart recovery, form submissions from _Contact Form 7_, _Gravity Forms_, _WPForms_ etc and more using the **official WhatsApp Business API**.
 
 **NOTE:** This plugin requires you to have an account at [WANotifier.com](https://wanotifier.com/). Create your **FREE** account now by [clicking here](https://app.wanotifier.com/create-account/).
 
 Here's everything that you can do with this plugin...
 
-== WhatsApp Integration with Core WordPress ==
+== WhatsApp integration with core WordPress ==
 
 * Send WhatsApp notification when a **new post or page is published**
 * Send WhatsApp notification when a post of any **custom post type is published**
 * Send WhatsApp notification when a **new comment is added**
 * Send WhatsApp notification when a **new user is registered**
 
-== WhatsApp Notifications for WooCommerce Orders ==
+== WhatsApp integration with WooCommerce ==
 
 * Send WhatsApp notification when a **new WooCommerce order is placed**
 * Send WhatsApp notification when a **new WooCommerce order is placed with COD payment method**
 * Send WhatsApp notification on all **order status changes**
 * Send WhatsApp notification when a **user abandones their cart**
 
-== WhatsApp Integration for Other WordPress Plugins ==
+== WhatsApp integration with other WordPress plugins ==
 
 Send WhatsApp notification for...
 
