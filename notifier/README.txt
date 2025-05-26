@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp api, whatsapp integration, whatsapp notification, woocommerce whatsapp, whatsapp
 Requires at least: 5.0
 Tested up to: 6.7
-Stable tag: 2.7.5
+Stable tag: 2.7.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -134,7 +134,12 @@ And a lot more. Visit [WANotifier.com](https://wanotifier.com) to learn more.
 4. Follow the instructions on the screen to complete your setup.
 
 == Changelog ==
-= 2.7.5 - 2025-03-27 =
+= 2.7.6 - 2025-05-26 =
+add: added order item fields – name, price, total of the first product
+mod: moved Woocommerce settings to Woocommerce tab
+add: meta box on Woocommerce order page to toggle WhatsApp updates opt-in
+
+= 2.7.5 - 2025-04-03 =
 mod: renamed plugin from WANotifier to Notifier to comply with WordPress policies
 
 = 2.7.4 - 2025-03-27 =

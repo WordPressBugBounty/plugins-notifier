@@ -3,7 +3,7 @@
  * Plugin Name: Notifier - Send Message Notifications Using Business API
  * Plugin URI: https://wordpress.org/plugins/notifier/
  * Description: Integrate WhatsApp API with WordPress to send WhatsApp notifications from Woocommerce, Contact Form 7, Gravity Forms, WPForms & more.
- * Version: 2.7.5
+ * Version: 2.7.6
  * Author: WANotifier.com
  * Author URI: https://wanotifier.com
  * Text Domain: notifier

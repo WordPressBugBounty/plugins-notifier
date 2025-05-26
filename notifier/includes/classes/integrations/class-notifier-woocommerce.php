@@ -15,6 +15,9 @@ class Notifier_Woocommerce {
 		add_filter( 'notifier_notification_recipient_fields', array( __CLASS__, 'woocommerce_recipient_fields') );
 		add_action( 'woocommerce_review_order_before_submit', array( __CLASS__, 'add_checkout_optin_fields') );
 		add_action( 'woocommerce_checkout_update_order_meta', array( __CLASS__, 'notifier_save_checkout_field'));
+		add_action( 'add_meta_boxes', array( __CLASS__, 'register_order_meta_box' ) );
+		add_action( 'woocommerce_admin_order_data_after_billing_address', array( __CLASS__, 'edit_admin_order_meta' ) );
+		add_action( 'woocommerce_process_shop_order_meta', array( __CLASS__, 'save_admin_order_meta' ), 10, 2 );
 		
 		add_action( 'wp_ajax_notifier_save_cart_abandonment_data', array(__CLASS__, 'notifier_save_cart_abandonment_data'));
 		add_action( 'wp_ajax_nopriv_notifier_save_cart_abandonment_data', array(__CLASS__, 'notifier_save_cart_abandonment_data'));
@@ -227,7 +230,7 @@ class Notifier_Woocommerce {
 			),
 			'first_product_image' => array(
 				'preview'	=> '',
-				'label' 	=> 'Order product image',
+				'label' 	=> 'Order first item featured image',
 				'return_type'	=> 'image',
 				'value'		=> function ($order, $field_function) {
 					$image_id = false;
@@ -262,6 +265,43 @@ class Notifier_Woocommerce {
 					}
 
 					return implode(', ',$order_item_data);
+				}
+			),
+			'order_first_item_name' => array(
+				'preview'      => '',
+				'label'        => 'Order first item name',
+				'return_type'  => 'text',
+				'value'        => function ($order, $field_function) {
+					foreach ($order->get_items() as $item) {
+						return $item->get_name();
+					}
+					return '';
+				}
+			),
+			'order_first_item_price' => array(
+				'preview'      => '',
+				'label'        => 'Order first item price',
+				'return_type'  => 'text',
+				'value'        => function ($order, $field_function) {
+					foreach ($order->get_items() as $item) {
+						$product = $item->get_product();
+						if ( $product ) {
+							return wc_price( $product->get_price(), array( 'currency' => $order->get_currency() ) );
+						}
+						break;
+					}
+					return '';
+				}
+			),
+			'order_first_item_total' => array(
+				'preview'      => '',
+				'label'        => 'Order first item total',
+				'return_type'  => 'text',
+				'value'        => function ($order, $field_function) {
+					foreach ($order->get_items() as $item) {
+						return wc_price( $item->get_total(), array( 'currency' => $order->get_currency() ));
+					}
+					return '';
 				}
 			),
 		);
@@ -826,6 +866,60 @@ class Notifier_Woocommerce {
 			$order->update_meta_data( NOTIFIER_PREFIX . 'whatsapp_opt_in', $opt_in );
     		$order->save();
 		}
+	}
+
+	/**
+	 * Register order meta box
+	 */	
+	public static function register_order_meta_box() {
+		add_meta_box(
+			'notifier_woocommerce_order_meta',
+			__( 'WANotifier', 'your-textdomain' ),
+			array( __CLASS__, 'edit_admin_order_meta' ),
+			'shop_order',
+			'side',
+			'default'
+		);
+	}
+
+	/**
+	 * Display checkbox field on order page
+	 */	
+	public static function edit_admin_order_meta( $post ){
+		if ( 'yes' !== get_option( NOTIFIER_PREFIX . 'enable_opt_in_checkbox_checkout' ) ) {
+			return;
+		}
+
+		$order = wc_get_order( $post->ID ); // Get the order from post ID
+		if ( ! $order ) {
+			return;
+		}
+
+		$checkbox_text = get_option( NOTIFIER_PREFIX . 'checkout_opt_in_checkbox_text' );
+		if ( empty( $checkbox_text ) ) {
+			$checkbox_text = 'Receive updates on WhatsApp';
+		}
+
+		$opt_in  = $order->get_meta( NOTIFIER_PREFIX . 'whatsapp_opt_in' );
+		$checked = checked( $opt_in, '1', false );
+
+		echo '<p>';
+		echo '<label for="' . esc_attr( NOTIFIER_PREFIX . 'whatsapp_opt_in' ) . '">';
+		echo '<input type="checkbox" name="' . esc_attr( NOTIFIER_PREFIX . 'whatsapp_opt_in' ) . '" id="' . esc_attr( NOTIFIER_PREFIX . 'whatsapp_opt_in' ) . '" value="1" ' . $checked . ' />';
+		echo '&nbsp;' . esc_html( $checkbox_text );
+		echo '</label>';
+		echo '</p>';
+	}
+
+	/**
+	 * Hook to save the custom field data on order page
+	 */
+	public static function save_admin_order_meta( $post_id, $post ) {
+		$order = wc_get_order( $post_id );
+
+		$opt_in = isset( $_POST[ NOTIFIER_PREFIX . 'whatsapp_opt_in' ] ) ? '1' : '';
+		$order->update_meta_data( NOTIFIER_PREFIX . 'whatsapp_opt_in', $opt_in );
+		$order->save();
 	}
 
     /**
