@@ -36,9 +36,9 @@
 .select2-container--default .select2-selection--multiple { background-color: white; border: 1px solid #aaa; border-radius: 4px; cursor: text; padding: 8px 8px 0 8px; position: relative; }
 .select2-container--default .select2-selection--multiple.select2-selection--clearable { padding-right: 25px; }
 .select2-container--default .select2-selection--multiple .select2-selection__clear { cursor: pointer; font-weight: bold; height: 20px; margin-right: 10px; margin-top: 5px; position: absolute; right: 0; padding: 1px; }
-.select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: #e4e4e4; border: 1px solid #aaa; border-radius: 4px; box-sizing: border-box; display: inline-block; margin-right: 8px; margin-bottom: 8px; padding: 0; padding-left: 20px; position: relative; max-width: 100%; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; white-space: nowrap; }
-.select2-container--default .select2-selection--multiple .select2-selection__choice__display { cursor: default; padding-left: 2px; padding-right: 5px; }
-.select2-container--default .select2-selection--multiple .select2-selection__choice__remove { background-color: transparent; border: none; border-right: 1px solid #aaa; border-top-left-radius: 4px; border-bottom-left-radius: 4px; color: #999; cursor: pointer; font-size: 1em; font-weight: bold; padding: 0 4px; position: absolute; left: 0; top: 0; }
+.select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: #e4e4e4; border: 1px solid #aaa; border-radius: 4px; box-sizing: border-box; display: inline-flex ; margin-right: 8px; margin-bottom: 8px; padding: 0; position: relative; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; align-items: center; }
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display { cursor: default; padding: 3px 8px 4px 8px; line-height: 1em; }
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove { background-color: transparent; border: none; border-right: 1px solid #aaa; border-top-left-radius: 4px; border-bottom-left-radius: 4px; color: #999; cursor: pointer; font-size: 1em; font-weight: bold; padding: 2px 6px 4px 6px; }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover,
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus { background-color: #f1f1f1; color: #333; outline: none; }
@@ -1036,9 +1036,19 @@ table.wp-list-table tfoot th {
 .notifier-tool-activity-wrap .activity-log-preview-wrap {
   background: #f7f7f7;
   padding: 10px;
-  max-height: 150px;
+  max-height: 200px;
   overflow: auto;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-top: 10px;
+}
+.notifier-tool-activity-wrap .activity-log-preview-wrap table {
+  width: 100px;
+}
+.notifier-tool-activity-wrap .activity-log-preview-wrap table .activity-record td {
+  vertical-align: top;
+}
+.notifier-tool-activity-wrap .activity-log-preview-wrap table .activity-record td:first-child {
+  padding-right: 10px;
+  white-space: nowrap;
 }

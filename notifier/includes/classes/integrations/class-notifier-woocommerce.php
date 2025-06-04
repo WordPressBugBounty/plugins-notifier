@@ -232,25 +232,20 @@ class Notifier_Woocommerce {
 				'preview'	=> '',
 				'label' 	=> 'Order first item featured image',
 				'return_type'	=> 'image',
-				'value'		=> function ($order, $field_function) {
-					$image_id = false;
-					$image_url = '';
-					foreach($order->get_items() as $item){
-						$first_product_id = $item->get_product_id();
-						$product = wc_get_product( $first_product_id );
-						$image_id = $product->get_image_id();
-						if($image_id){
-							break;
+				'value'       => function ( $order, $field_function ) {
+					foreach ( $order->get_items() as $item ) {
+						$product = $item->get_product();
+						if ( $product ) {
+							$image_id = $product->get_image_id();
+							if ( $image_id ) {
+								return wp_get_attachment_url( $image_id );
+							} else {
+								return wc_placeholder_img_src();
+							}
 						}
+						break;
 					}
-
-					if($image_id){
-						$image_url = wp_get_attachment_url( $product->get_image_id() );
-					}
-					else{
-						$image_url = wc_placeholder_img_src();
-					}
-	                return $image_url;
+					return wc_placeholder_img_src();
 				}
 			),
 			'products_list' => array(
@@ -1283,5 +1278,4 @@ class Notifier_Woocommerce {
 			as_unschedule_all_actions('notifier_check_cart_abandonment', array(sanitize_key($session_key)));
 		}
 	}
-
 }

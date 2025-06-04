@@ -1,10 +1,10 @@
-=== Notifier - Send Message Notifications Using Business API ===
+=== Notifier - Send Notifications from Woocommerce, Form Plugins and More! ===
 Contributors: wanotifier
 Donate link: https://wanotifier.com
 Tags: whatsapp api, whatsapp integration, whatsapp notification, woocommerce whatsapp, whatsapp
 Requires at least: 5.0
-Tested up to: 6.7
-Stable tag: 2.7.6
+Tested up to: 6.8
+Stable tag: 2.7.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Integrate WhatsApp API with WordPress to send WhatsApp notifications from Woocommerce, Contact Form 7, Gravity Forms, WPForms & more.
 
 == Description ==
-**Integrate WhatsApp API with WordPress** to send WhatsApp notifications for Woocommerce orders, abadoned cart recovery, form submissions from _Contact Form 7_, _Gravity Forms_, _WPForms_ etc and more using the **official WhatsApp Business API**.
+**Integrate WhatsApp API with WordPress** to send WhatsApp notifications for Woocommerce orders, abadoned cart recovery, form submissions from _Contact Form 7_, _Gravity Forms_, _WPForms_ etc and more using the official [WhatsApp Business API](https://wanotifier.com/whatsapp-business-api/).
 
 **NOTE:** This plugin requires you to have an account at [WANotifier.com](https://wanotifier.com/). Create your **FREE** account now by [clicking here](https://app.wanotifier.com/create-account/).
 
@@ -134,6 +134,10 @@ And a lot more. Visit [WANotifier.com](https://wanotifier.com) to learn more.
 4. Follow the instructions on the screen to complete your setup.
 
 == Changelog ==
+= 2.7.7 - 2025-06-04 =
+mod: Tested upto version bump and README.txt file update
+mod: minor UI updates
+
 = 2.7.6 - 2025-05-26 =
 add: added order item fields – name, price, total of the first product
 mod: moved Woocommerce settings to Woocommerce tab

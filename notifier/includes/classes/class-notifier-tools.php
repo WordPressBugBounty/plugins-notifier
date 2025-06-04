@@ -204,8 +204,8 @@ class Notifier_Tools {
         if (!empty($logs)){
             foreach ($logs as $log){
                 $logs_preview_htm .= '<tr class="activity-record">';
-                $logs_preview_htm .= '<td style="width:10%; vertical-align: top;"><strong>'.esc_html($log->timestamp).'</strong> </td>'; 
-                $logs_preview_htm .= '<td style="width:90%; vertical-align: top;">'.esc_html($log->message).'</td>';
+                $logs_preview_htm .= '<td><strong>'.esc_html($log->timestamp).'</strong> </td>'; 
+                $logs_preview_htm .= '<td>'.esc_html($log->message).'</td>';
                 $logs_preview_htm .= '</tr>';
             }
         } else {

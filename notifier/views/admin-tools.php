@@ -45,8 +45,8 @@ $dates = Notifier_Tools::get_logs_date_lists();
 						<div class="notifier-tool-action">
 							<select name="notifier_activity_date" id="notifier_activity_date">
 								<option value="">Select date</option>
-								<?php foreach ($dates as $date){ ?>
-									<option value="<?php echo esc_attr($date); ?>"><?php echo esc_html($date); ?></option>
+								<?php foreach ($dates as $key => $date){ ?>
+									<option value="<?php echo esc_attr($date); ?>" <?php echo ($key == 0) ? 'selected' : ''; ?>><?php echo esc_html($date); ?></option>
 								<?php } ?>
 							</select>
 						</div>
