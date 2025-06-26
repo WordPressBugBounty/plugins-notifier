@@ -41,7 +41,7 @@ class Notifier_Settings {
 		$tabs = array(
 			'general'       => 'General',
 			'woocommerce'	=> 'WooCommerce',
-			'click_to_chat' => 'Click to Chat',
+			'whatsapp_chat_button' => 'WhatsApp Chat Button',
 			'api'           => 'API',
 			'advanced'      => 'Advanced',
 		);
@@ -94,11 +94,11 @@ class Notifier_Settings {
 				);
 
 				break;
-			case 'click_to_chat':
+			case 'whatsapp_chat_button':
 				$settings = array(
 					array(
-						'title'			=> 'Click to Chat',
-						'description'	=> 'Show click to chat button on your website to let your visitors start WhatsApp chat with you.',
+						'title'			=> 'WhatsApp Chat Button',
+						'description'	=> 'Add a WhatsApp chat button to your website to let your visitors start chat with you on WhatsApp.',
 						'type'			=> 'title',
 					),
 					array(

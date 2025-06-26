@@ -133,7 +133,7 @@ class Notifier_GravityForms {
 			else {
 				foreach($field->inputs as $input){
 					$field_id = $input['id'];
-					if('1' == $input['isHidden']){
+					if(isset($input['isHidden']) && '1' == $input['isHidden']){
 						continue;
 					}
 					$merge_tags['Gravity Forms'][] = array(
