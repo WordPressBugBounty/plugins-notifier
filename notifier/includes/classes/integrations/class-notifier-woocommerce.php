@@ -817,6 +817,10 @@ class Notifier_Woocommerce {
 	 * Get phone number with country extension code
 	 */
 	public static function get_formatted_phone_number( $phone_number, $country_code ) {
+		// If already starts with + and matches international format, return as-is
+		if ( strpos($phone_number, '+') === 0 && notifier_validate_phone_number($phone_number) ) {
+			return $phone_number;
+		}
 		$phone_number = notifier_sanitize_phone_number( $phone_number );
 		$phone_number = ltrim($phone_number, '0');
 		if ( in_array( $country_code, array( 'US', 'CA' ), true ) ) {

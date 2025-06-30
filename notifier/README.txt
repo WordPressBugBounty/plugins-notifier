@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, woocommerce whatsapp, whatsapp notification, whatsapp api, whatsapp chat
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 2.7.8
+Stable tag: 2.7.9
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -43,11 +43,11 @@ https://youtu.be/mnU6sV2zBu0
 
 Add WhatsApp chat button to your website to allow your visitors to directly interact with you.
 
+https://youtu.be/JHbgpnT2eX0
+
 Boost your engagement with integrating the button with our **WhatsApp chatbot** or other automations to respond to user queries on autopilot 24/7.
 
-👉 [Learn hwo to create a WhatsApp chatbot](https://wanotifier.com/create-whatsapp-chatbot/)
-
-https://youtu.be/JHbgpnT2eX0
+👉 [Learn how to create a WhatsApp chatbot](https://wanotifier.com/create-whatsapp-chatbot/)
 
 == Send WhatsApp Notifications from other WordPress plugins ==
 
@@ -158,6 +158,9 @@ And a lot more. Visit [WANotifier.com](https://wanotifier.com) to learn more.
 4. Follow the instructions on the screen to complete your setup.
 
 == Changelog ==
+= 2.7.9 - 2025-06-30 =
+fix: resolved issue with incorrectly prefixed country codes in WooCommerce
+
 = 2.7.8 - 2025-06-26 =
 fix: 'isHidden' undefined error in Gravity Forms integration
 mod: renamed Click-to-chat feature to WhatsApp Chat buttons
