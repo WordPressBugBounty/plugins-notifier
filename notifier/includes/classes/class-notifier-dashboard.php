@@ -71,21 +71,19 @@ class Notifier_Dashboard {
 
 		$response = Notifier::send_api_request( 'verify_api', $params, 'POST' );
 
-		if($response->error){
-			$notices[] = array(
-				'message' => $response->message,
-				'type' => 'error'
-			);
-			new Notifier_Admin_Notices($notices, true);
-			wp_redirect(admin_url('admin.php?page=notifier'));
-			die;
+		if(isset($response->error) && $response->error == false){
+			update_option('notifier_api_activated', 'yes');
+			$message_text = isset($response->data) ? $response->data : 'API key validated and saved successfully';
+			$message_type = 'success';
+		} 
+		else {
+			$message_text = isset($response->message) ? $response->message : 'There was an error validating your API key.';
+			$message_type = 'error';
 		}
 
-		update_option('notifier_api_activated', 'yes');
-
 		$notices[] = array(
-			'message' => $response->data,
-			'type' => 'success'
+			'message' => $message_text,
+			'type' => $message_type
 		);
 		new Notifier_Admin_Notices($notices, true);
 		wp_redirect(admin_url('admin.php?page=notifier'));

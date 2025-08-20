@@ -4,15 +4,15 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, woocommerce whatsapp, whatsapp notification, whatsapp api, whatsapp chat
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 2.7.9
+Stable tag: 2.7.10
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrate WhatsApp API with WordPress to send WhatsApp notifications from Woocommerce, Contact Form 7, Gravity Forms, WPForms & more.
+WhatsApp API integration to send WhatsApp notifications from Woocommerce, Contact Form 7, Gravity Forms, WPForms & more.
 
 == Description ==
-**Integrate WhatsApp with WordPress** to send WhatsApp notifications for...
+**WhatsApp API integration plugin for WordPress** to send WhatsApp notifications for...
 
 * orders status updates from Woocommerce
 * abadoned cart recovery
@@ -158,6 +158,11 @@ And a lot more. Visit [WANotifier.com](https://wanotifier.com) to learn more.
 4. Follow the instructions on the screen to complete your setup.
 
 == Changelog ==
+= 2.7.10 - 2025-07-04 =
+fix: duplicate cart abandonment notifications
+add: added session_key field to cart (new) abandonment trigger
+add: improved API key validation to prevent errors when using invalid keys
+
 = 2.7.9 - 2025-06-30 =
 fix: resolved issue with incorrectly prefixed country codes in WooCommerce
 

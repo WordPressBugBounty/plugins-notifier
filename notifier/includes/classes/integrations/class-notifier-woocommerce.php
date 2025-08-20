@@ -499,6 +499,19 @@ class Notifier_Woocommerce {
 				}
 			),
 			array(
+				'id'            => 'wca_cart_session_key',
+				'label'         => 'Abandoned cart recovery key',
+				'preview_value' => '',
+				'return_type'   => 'text',
+				'value'         => function ($cart_details) {
+					if ($cart_details && isset($cart_details['session_key'])) {
+						$session_key = sanitize_key($cart_details['session_key']);
+						return $session_key;
+					}
+					return '';
+				}
+			),
+			array(
 				'id'            => 'wca_cart_customer_email',
 				'label'         => 'Billing email',
 				'preview_value' => '',
@@ -1023,8 +1036,27 @@ class Notifier_Woocommerce {
 			wp_send_json(array('error' => true, 'message' => 'Cart abandonment already processed.' ));
 		}
 
-		// Determine created_time
-		$created_time = $existing_entry ? $existing_entry->created_time : current_time('mysql');
+		// Fetch all active session_keys for this phone number
+		$existing_session_keys = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT session_key FROM $table_name WHERE phone_number = %s AND triggered = 0 AND order_id = 0",
+				$phone_number
+			)
+		);
+
+		// Delete all other sessions except the current one
+		if (!empty($existing_session_keys)) {
+			foreach ($existing_session_keys as $old_session_key) {
+				if ($session_key !== $old_session_key) {
+					$wpdb->query(
+						$wpdb->prepare(
+							"DELETE FROM $table_name WHERE session_key = %s",
+							$old_session_key
+						)
+					);
+				}
+			}
+		}
 
 		// Update or insert cart and customer data into the table
 		if ($existing_entry) {
