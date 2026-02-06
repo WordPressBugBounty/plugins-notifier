@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, woocommerce whatsapp, whatsapp notification, whatsapp api, whatsapp chat
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 2.7.12
+Stable tag: 2.7.13
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -158,6 +158,9 @@ And a lot more. Visit [WANotifier.com](https://wanotifier.com) to learn more.
 4. Follow the instructions on the screen to complete your setup.
 
 == Changelog ==
+= 2.7.13 - 2026-02-06 =
+fix: broken access control vulnerability in AJAX handlers
+
 = 2.7.12 - 2025-11-05 =
 fix: PHP warning for undefined array key in Fluent Forms field processing
 

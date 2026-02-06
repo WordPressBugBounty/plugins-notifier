@@ -709,14 +709,30 @@ class Notifier_Notification_Triggers {
 	 * Enable / disable trigger
 	 */
 	public static function notifier_change_trigger_status(){
-		$post_id = isset($_POST['post_id']) ? $_POST['post_id'] : 0;
-		$enabled = isset($_POST['enabled']) ? $_POST['enabled'] : 'no';
+		// Security check: Verify user has manage_options capability
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array(
+				'message' => 'You do not have permission to perform this action.'
+			) );
+		}
+
+		// Verify nonce for additional security
+		if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'notifier_change_trigger_status' ) ) {
+			wp_send_json_error( array(
+				'message' => 'Security check failed.'
+			) );
+		}
+
+		$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+		$enabled = isset($_POST['enabled']) ? sanitize_text_field($_POST['enabled']) : 'no';
+		
 		if('wa_notifier_trigger' != get_post_type($post_id)){
 			wp_send_json( array(
 				'error' => true,
 				'message'  => 'Invalid post type.'
 			) );
 		}
+		
 		update_post_meta( $post_id, NOTIFIER_PREFIX . 'trigger_enabled' , $enabled);
 		wp_send_json( array(
 			'error' => false,
@@ -728,8 +744,22 @@ class Notifier_Notification_Triggers {
 	 * Fetch trigger fields for a speicific trigger
 	 */
 	public static function notifier_fetch_trigger_fields(){
-		$post_id =  isset($_POST['post_id']) ? $_POST['post_id'] : 0;
-		$trigger =  isset($_POST['trigger']) ? $_POST['trigger'] : '';
+		// Security check: Verify user has manage_options capability
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array(
+				'message' => 'You do not have permission to perform this action.'
+			) );
+		}
+
+		// Verify nonce for additional security
+		if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'notifier_fetch_trigger_fields' ) ) {
+			wp_send_json_error( array(
+				'message' => 'Security check failed.'
+			) );
+		}
+
+		$post_id =  isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+		$trigger =  isset($_POST['trigger']) ? sanitize_text_field($_POST['trigger']) : '';
 
 		$data_fields = get_post_meta( $post_id, NOTIFIER_PREFIX . 'data_fields', true);
 		$recipient_fields = get_post_meta( $post_id, NOTIFIER_PREFIX . 'recipient_fields', true);

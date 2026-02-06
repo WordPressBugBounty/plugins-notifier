@@ -614,6 +614,20 @@ class Notifier_Settings {
 	 * Show Chat Button Preview
 	 */
 	public static function preview_btn_style(){
+		// Security check: Verify user has manage_options capability
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array(
+				'message' => 'You do not have permission to perform this action.'
+			) );
+		}
+
+		// Verify nonce for additional security
+		if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'notifier_preview_btn_style' ) ) {
+			wp_send_json_error( array(
+				'message' => 'Security check failed.'
+			) );
+		}
+
 		$btn_style = isset($_POST['btn_style']) ? sanitize_text_field($_POST['btn_style']) : '';
 
 		$button_styles = self::get_button_styles();

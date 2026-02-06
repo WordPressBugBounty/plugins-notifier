@@ -188,6 +188,20 @@ class Notifier_Tools {
      * Fetch all activity info for current user by date
      */
     public static function fetch_activity_logs_by_date() {
+        // Security check: Verify user has manage_options capability
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( array(
+                'message' => 'You do not have permission to perform this action.'
+            ) );
+        }
+
+        // Verify nonce for additional security
+        if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'notifier_fetch_activity_logs' ) ) {
+            wp_send_json_error( array(
+                'message' => 'Security check failed.'
+            ) );
+        }
+
         $activity_date = isset($_POST['notifier_activity_date']) ? sanitize_text_field($_POST['notifier_activity_date']) : '';
 
         global $wpdb;

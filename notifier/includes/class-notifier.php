@@ -23,7 +23,7 @@ class Notifier {
 	 * Define Constants.
 	 */
 	private function define_constants() {
-		$this->define( 'NOTIFIER_VERSION', '2.7.12' );
+		$this->define( 'NOTIFIER_VERSION', '2.7.13' );
 		$this->define( 'NOTIFIER_NAME', 'notifier' );
 		$this->define( 'NOTIFIER_PREFIX', 'notifier_' );
 		$this->define( 'NOTIFIER_URL', trailingslashit( plugins_url( '', dirname(__FILE__) ) ) );
@@ -181,7 +181,15 @@ class Notifier {
     	wp_localize_script(
     		NOTIFIER_NAME . '-admin-js',
     		'notifierObj',
-    		apply_filters( 'notifier_js_variables', array('ajaxurl' => admin_url( 'admin-ajax.php' ) ) )
+    		apply_filters( 'notifier_js_variables', array(
+    			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+    			'nonces' => array(
+    				'preview_btn_style' => wp_create_nonce( 'notifier_preview_btn_style' ),
+    				'fetch_activity_logs' => wp_create_nonce( 'notifier_fetch_activity_logs' ),
+    				'change_trigger_status' => wp_create_nonce( 'notifier_change_trigger_status' ),
+    				'fetch_trigger_fields' => wp_create_nonce( 'notifier_fetch_trigger_fields' )
+    			)
+    		) )
     	);
 
     	// Styles

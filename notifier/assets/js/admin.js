@@ -119,6 +119,7 @@
 			action: 			'notifier_fetch_trigger_fields',
 			trigger: 			trigger,
 			post_id: 			post_id,
+			_wpnonce: 			notifierObj.nonces.fetch_trigger_fields
 		};
 
 		notifierAjax( data, function(response) {
@@ -188,6 +189,7 @@
 		data = {
 			'action': 'fetch_activity_logs_by_date',
 			'notifier_activity_date': currenEle.val(),
+			'_wpnonce': notifierObj.nonces.fetch_activity_logs
 		}
 
 		notifierAjax(data, function(response){
@@ -279,6 +281,7 @@
 		    	data = {
 		    		action: 'notifier_preview_btn_style',
 		    		btn_style: btn_style,
+		    		_wpnonce: notifierObj.nonces.preview_btn_style
 		    	}
 
 		    	notifierAjax(data, function(response){
@@ -310,7 +313,8 @@
 	    	data = {
 	    		action: 'notifier_change_trigger_status',
 	    		post_id: postId,
-	    		enabled: enabled
+	    		enabled: enabled,
+	    		_wpnonce: notifierObj.nonces.change_trigger_status
 	    	}
 	    	notifierAjax(data, function(response){});
 	  	});
