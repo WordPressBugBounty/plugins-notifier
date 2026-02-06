@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, woocommerce whatsapp, whatsapp notification, whatsapp api, whatsapp chat
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 2.7.10
+Stable tag: 2.7.12
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -158,6 +158,12 @@ And a lot more. Visit [WANotifier.com](https://wanotifier.com) to learn more.
 4. Follow the instructions on the screen to complete your setup.
 
 == Changelog ==
+= 2.7.12 - 2025-11-05 =
+fix: PHP warning for undefined array key in Fluent Forms field processing
+
+= 2.7.11 - 2025-10-09 =
+add: new slug field for post triggers
+
 = 2.7.10 - 2025-07-04 =
 fix: duplicate cart abandonment notifications
 add: added session_key field to cart (new) abandonment trigger

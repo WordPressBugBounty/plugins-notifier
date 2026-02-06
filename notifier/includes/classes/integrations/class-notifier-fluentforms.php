@@ -127,7 +127,7 @@ class Notifier_FluentForms {
 					}
 				}else if('input_image' === $value['element']) {
 					$field_type = 'image';
-					$field_name = $value['attributes']['name'];
+					$field_name = isset($value['attributes']['name']) ? $value['attributes']['name'] : '';
 
 					if(!empty($value['settings']['label'])){
 						$field_lbl = $value['settings']['label'];
@@ -142,15 +142,15 @@ class Notifier_FluentForms {
 						'type' => $field_type,
 					];
 				}else {
-					$field_type = !empty($value['attributes']['type'])?$value['attributes']['type']:'text';
-					$field_name = $value['attributes']['name'];
+					$field_type = !empty($value['attributes']['type']) ? $value['attributes']['type'] : 'text';
+					$field_name = isset($value['attributes']['name']) ? $value['attributes']['name'] : '';
 
 					if(!empty($value['settings']['label'])){
 						$field_lbl = $value['settings']['label'];
 					}else if(!empty($value['settings']['admin_field_label'])){
 						$field_lbl = $value['settings']['admin_field_label'];
 					}else{
-						$field_lbl = 'lbl_'.$value['attributes']['name'];
+						$field_lbl = 'lbl_'.$field_name;
 					}
 
 					$fields_data[$field_name] = [

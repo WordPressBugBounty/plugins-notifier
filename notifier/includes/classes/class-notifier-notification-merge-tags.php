@@ -215,6 +215,17 @@ class Notifier_Notification_Merge_Tags {
 			);
 
 			$merge_tags[$post->labels->singular_name][]	= array(
+				'id' 			=> $post->name.'_slug',
+				'label' 		=> $post->labels->singular_name.' slug',
+				'preview_value' => 'hello-world',
+				'return_type'	=> 'text',
+				'value'			=> function ($args) {
+					$post = get_post($args['object_id']);
+					return $post->post_name;
+				}
+			);
+
+			$merge_tags[$post->labels->singular_name][]	= array(
 				'id' 			=> $post->name.'_status',
 				'label' 		=> $post->labels->singular_name.' status',
 				'preview_value' => 'publish',
