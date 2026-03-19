@@ -3,7 +3,7 @@
  * Plugin Name: Notifications for Forms & WordPress Actions
  * Plugin URI: https://wordpress.org/plugins/notifier/
  * Description: Send WhatsApp notifications for form submissions from CF7, Gravity Forms, WPForms and more and WordPress actions using WhatsApp Business API
- * Version: 3.0.0
+ * Version: 3.0.1
  * Author: WANotifier
  * Author URI: https://wanotifier.com
  * Text Domain: notifier

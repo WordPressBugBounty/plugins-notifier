@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, whatsapp notification, whatsapp api, whatsapp chat, contact form 7
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -95,7 +95,49 @@ If you're looking for a **cost friendly and robust** solution for sending WhatsA
 * [Pricing](https://wanotifier.com/pricing/)
 * [Create your FREE account](https://app.wanotifier.com/create-account/?utm_campaign=woo-plugin)
 
+== Installation ==
+
+1. Download the plugin zip, upload it to the `/wp-content/plugins/` directory and unzip. Or install the plugin via 'Plugins' page in your WordPress backend.
+2. Activate the plugin through the 'Plugins' page.
+3. Go to **WANotifier** page from your WordPress admin menu.
+4. Follow the instructions on the screen to connect with WANotifier and complete your setup.
+
+== Frequently Asked Questions ==
+
+= Do I need a WANotifier account to use this plugin? =
+
+Yes. This plugin connects your WordPress site to your [WANotifier](https://wanotifier.com/) account, which handles WhatsApp message delivery via the official WhatsApp Business API. You can [create a free account here](https://app.wanotifier.com/create-account/).
+
+= Does this plugin use the official WhatsApp API? =
+
+Yes. All messages are sent through the official WhatsApp Business API via WANotifier. No unofficial methods or browser extensions are used.
+
+= Is WhatsApp API free? =
+
+WhatsApp charges a small per-conversation fee billed directly by Meta. WANotifier does not add any markup on top of WhatsApp's pricing. See [WhatsApp's pricing page](https://developers.facebook.com/docs/whatsapp/pricing/) for details.
+
+= Which form plugins are supported? =
+
+Contact Form 7, Gravity Forms, WPForms, Ninja Forms, Formidable Forms, Fluent Forms, SureForms, Forminator Forms and WS Form.
+
+= What about WooCommerce integration? =
+
+WooCommerce integration has been moved to a standalone plugin: [Order & Abandoned Cart Notifications for WooCommerce](https://wordpress.org/plugins/order-notifications-for-woocommerce/).
+
+== Screenshots ==
+
+1. Grid of available integrations whose respective plugins are active
+2. Connect your integration with WANotifier in one click
+3. Configure / disconnect integrations and re-sync triggers
+4. Integration specific configuration page
+5. Configure the WhatsApp Chat Button with live preview
+6. Manage plugin General settings
+7. Activity log to monitor notification delivery
+
 == Changelog ==
+= 3.0.1 - 2026-03-19 =
+* fix: prevent duplicate trigger actions from being scheduled for the same event
+
 = 3.0.0 - 2026-03-02 =
 * mod: complete UI overhaul with new React-based admin interface
 * mod: migration system to migrate your old triggers to v3

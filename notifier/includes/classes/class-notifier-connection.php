@@ -248,13 +248,31 @@ class Notifier_Connection {
             sprintf( '[%s] Trigger scheduled: %s (object_id: %d)', $slug, $trigger_slug, $object_id )
         );
 
+        $action_args = array(
+            'slug'         => $slug,
+            'trigger_slug' => $trigger_slug,
+            'context_args' => $context_args,
+        );
+
+        // Prevent duplicate actions for the same trigger + context.
+        $existing = as_get_scheduled_actions( array(
+            'hook'   => 'notifier_fire_trigger',
+            'args'   => $action_args,
+            'group'  => 'notifier',
+            'status' => ActionScheduler_Store::STATUS_PENDING,
+        ), 'ids' );
+
+        if ( ! empty( $existing ) ) {
+            Notifier_Backend::insert_activity_log(
+                'debug',
+                sprintf( '[%s] Duplicate trigger skipped: %s (object_id: %d)', $slug, $trigger_slug, $object_id )
+            );
+            return;
+        }
+
         as_enqueue_async_action(
             'notifier_fire_trigger',
-            array(
-                'slug'         => $slug,
-                'trigger_slug' => $trigger_slug,
-                'context_args' => $context_args,
-            ),
+            $action_args,
             'notifier'
         );
     }
