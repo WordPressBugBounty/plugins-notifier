@@ -22,7 +22,7 @@ class Notifier_WSForm {
 		}
 
 		$ws_form = new WS_Form_Form();
-		$forms = $ws_form->db_read_all( '', 'NOT status="trash"', 'label ASC', '', '', false, true );
+		$forms = $ws_form->db_read_all( '', "NOT status='trash'", 'label ASC', '', '', false, true );
 
 		if ( empty( $forms ) || ! is_array( $forms ) ) {
 			return $existing_triggers;
@@ -120,7 +120,7 @@ class Notifier_WSForm {
 		}
 
 		$form_id = (int) $form['id'];
-		$excluded_types = array( 'html', 'section', 'captcha', 'page', 'header', 'spacer' );
+		$excluded_types = array( 'html', 'section', 'captcha', 'page', 'header', 'spacer', 'submit' );
 
 		foreach ( $fields as $field ) {
 

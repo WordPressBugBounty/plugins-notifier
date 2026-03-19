@@ -3,8 +3,8 @@ Contributors: wanotifier
 Donate link: https://wanotifier.com
 Tags: whatsapp, whatsapp notification, whatsapp api, whatsapp chat, contact form 7
 Requires at least: 5.0
-Tested up to: 6.8
-Stable tag: 3.0.1
+Tested up to: 6.9
+Stable tag: 3.0.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -135,6 +135,10 @@ WooCommerce integration has been moved to a standalone plugin: [Order & Abandone
 7. Activity log to monitor notification delivery
 
 == Changelog ==
+= 3.0.2 - 2026-03-19 =
+* fix: WS Form integration query now uses single-quoted SQL string to ensure compatibility across all MySQL server configurations
+* fix: exclude submit fields from WS Form merge tags
+
 = 3.0.1 - 2026-03-19 =
 * fix: prevent duplicate trigger actions from being scheduled for the same event
 
