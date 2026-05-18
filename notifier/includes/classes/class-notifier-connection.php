@@ -225,20 +225,28 @@ class Notifier_Connection {
     }
 
     // ========================================
-    // 3. TRIGGER DISPATCH (v3 — always via Action Scheduler)
+    // 3. TRIGGER DISPATCH (v3)
     // ========================================
 
     /**
-     * Dispatch a trigger event via Action Scheduler.
+     * Dispatch a trigger event.
      *
-     * Always async — AS provides built-in retry (3 attempts with backoff).
+     * Default: async via Action Scheduler — AS provides built-in retry (3 attempts with backoff).
+     * When the `notifier_disable_background_processing` option is `yes`, fires synchronously in the
+     * current request instead (no AS queueing, no retry, no dedupe).
      *
      * @param string $slug         Integration slug.
      * @param string $trigger_slug Trigger slug (e.g. 'woo_order_new').
-     * @param array  $payload      Trigger payload with merge_tags_data and recipient_fields.
+     * @param array  $context_args Context args (object_type, object_id, or form entry data).
      */
     public static function dispatch_trigger( $slug, $trigger_slug, $context_args ) {
         if ( ! self::is_connected( $slug ) ) {
+            return;
+        }
+
+        // Real-time mode: skip Action Scheduler and fire synchronously in the same request.
+        if ( 'yes' === get_option( 'notifier_disable_background_processing', 'no' ) ) {
+            self::handle_fire_trigger_action( $slug, $trigger_slug, $context_args );
             return;
         }
 

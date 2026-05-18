@@ -111,7 +111,7 @@ class Notifier_ContactForm7 {
 		$recipient_fields = array();
 		foreach($form_fields as $field){
 
-			if('tel' != $field->basetype){
+			if(!in_array($field->basetype, array('tel', 'phonefield'))){
 				continue;
 			}
 

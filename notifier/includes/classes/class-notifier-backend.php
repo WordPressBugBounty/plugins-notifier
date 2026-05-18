@@ -779,6 +779,7 @@ class Notifier_Backend {
     public static function get_all_settings() {
         return array(
             'default_country_code'              => get_option( 'notifier_default_country_code', '' ),
+            'disable_background_processing'     => get_option( 'notifier_disable_background_processing', 'no' ),
             'ctc_enable'                        => get_option( 'notifier_ctc_enable', 'no' ),
             'ctc_whatsapp_number'               => get_option( 'notifier_ctc_whatsapp_number', '' ),
             'ctc_greeting_text'                 => get_option( 'notifier_ctc_greeting_text', '' ),
@@ -794,6 +795,7 @@ class Notifier_Backend {
     private static function get_settings_field_definitions() {
         return array(
             'default_country_code'            => array( 'type' => 'text' ),
+            'disable_background_processing'   => array( 'type' => 'checkbox' ),
             'ctc_enable'                      => array( 'type' => 'checkbox' ),
             'ctc_whatsapp_number'             => array( 'type' => 'text' ),
             'ctc_greeting_text'               => array( 'type' => 'text' ),
