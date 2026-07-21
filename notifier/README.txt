@@ -1,15 +1,15 @@
-=== Notifications for Forms & WordPress Actions ===
+=== WANotifier for Forms and Actions ===
 Contributors: wanotifier
 Donate link: https://wanotifier.com
-Tags: whatsapp, whatsapp notification, whatsapp api, whatsapp chat, contact form 7
+Tags: whatsapp, whatsapp notification, whatsapp api, whatsapp chat, whatsapp integration
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Send WhatsApp notifications for form submissions from CF7, Gravity Forms, WPForms and more and WordPress actions using WhatsApp Business API
+Send WhatsApp notifications from Contact Form 7, Gravity Forms, WPForms, and 6 more form plugins using WhatsApp Business API
 
 == Description ==
 **WhatsApp API integration plugin for WordPress** to send WhatsApp notifications for...
@@ -28,7 +28,7 @@ Not just that, **add WhatsApp chat button** to your website with integrated [Wha
 
 **Looking for WooCommerce integration?** 
 
-Install our [Order & Abandoned Cart Notifications for WooCommerce](https://wordpress.org/plugins/order-notifications-for-woocommerce/) plugin.
+Install our [WANotifier for WooCommerce](https://wordpress.org/plugins/order-notifications-for-woocommerce/) plugin.
 
 Here's everything that you can do with this plugin...
 
@@ -85,7 +85,7 @@ And much more!
 
 **Note: WhatsApp Business API is paid API.** 
 
-They charge you a small fees per conversation as [shown here](https://developers.facebook.com/docs/whatsapp/pricing/) that you need to settle with them directly on their portal.
+Meta charges you a small fees per conversation as [shown here](https://developers.facebook.com/docs/whatsapp/pricing/) that you need to settle with them directly on their portal.
 
 If you're looking for a **cost friendly and robust** solution for sending WhatsApp broadcasts or messages, this tool is for you!
 
@@ -94,6 +94,8 @@ If you're looking for a **cost friendly and robust** solution for sending WhatsA
 * [Visit website](https://wanotifier.com/)
 * [Pricing](https://wanotifier.com/pricing/)
 * [Create your FREE account](https://app.wanotifier.com/create-account/?utm_campaign=woo-plugin)
+
+**Trademark Notice:** "WANotifier" is a registered trademark of WANotifier Inc. This plugin is developed and maintained by WANotifier Inc.
 
 == Installation ==
 
@@ -135,6 +137,9 @@ WooCommerce integration has been moved to a standalone plugin: [Order & Abandone
 7. Activity log to monitor notification delivery
 
 == Changelog ==
+= 3.0.4 - 2026-07-21 =
+* update: renamed plugin to "WANotifier for Forms and Actions"
+
 = 3.0.3 - 2026-05-18 =
 * fix: added phonefield support in CF7 recipient fields detection
 * add: "Disable background processing" setting under General to fire triggers in real time instead of queueing them
