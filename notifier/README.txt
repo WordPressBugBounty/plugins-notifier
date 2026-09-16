@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, whatsapp notification, whatsapp api, whatsapp chat, whatsapp integration
 Requires at least: 6.8
 Tested up to: 6.9
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -137,6 +137,9 @@ WooCommerce integration has been moved to a standalone plugin: [Order & Abandone
 7. Activity log to monitor notification delivery
 
 == Changelog ==
+= 3.1.1 - 2026-09-16 =
+* fix: send the site's own REST API URL when connecting, so sites without pretty permalinks (where the REST API lives under /index.php/wp-json/) can complete setup
+
 = 3.1.0 - 2026-09-03 =
 * update: upgraded bundled Action Scheduler from 3.5.4 to 4.1.0
 * update: minimum required WordPress version raised to 6.8, as required by Action Scheduler 4.x

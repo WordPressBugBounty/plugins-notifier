@@ -217,6 +217,7 @@ class Notifier_Connection {
 
         $payload = base64_encode( wp_json_encode( array(
             'store_url'     => site_url(),
+            'rest_url'      => rest_url(),
             'connect_token' => $token,
             'return_url'    => admin_url( 'admin.php?page=notifier' ),
         ) ) );

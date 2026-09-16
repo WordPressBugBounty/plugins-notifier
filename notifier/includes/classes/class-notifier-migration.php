@@ -176,6 +176,7 @@ class Notifier_Migration {
 
         $payload = base64_encode( wp_json_encode( array(
             'store_url'      => site_url(),
+            'rest_url'       => rest_url(),
             'slugs'          => $slugs,
             'connect_tokens' => $connect_tokens,
             'return_url'     => $return_url,
