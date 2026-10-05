@@ -191,6 +191,11 @@ class Notifier_Backend {
             ),
         ) );
 
+        register_rest_route( $namespace, '/admin/search-content', array(
+            'methods'             => 'GET',
+            'callback'            => array( __CLASS__, 'rest_search_content' ),
+            'permission_callback' => array( __CLASS__, 'rest_permission_check' ),
+        ) );
         register_rest_route( $namespace, '/admin/sync-triggers', array(
             'methods'             => 'POST',
             'callback'            => array( __CLASS__, 'rest_sync_triggers' ),
@@ -308,6 +313,16 @@ class Notifier_Backend {
         $errors  = array();
         $allowed = self::get_settings_field_definitions();
 
+        // The chat button can't be enabled without a WhatsApp number (it would silently not render).
+        $enabling_ctc = isset( $data['ctc_enable'] ) && ( 'yes' === $data['ctc_enable'] || '1' === $data['ctc_enable'] || true === $data['ctc_enable'] );
+        $ctc_number   = isset( $data['ctc_whatsapp_number'] ) ? trim( (string) $data['ctc_whatsapp_number'] ) : get_option( 'notifier_ctc_whatsapp_number', '' );
+        if ( $enabling_ctc && '' === $ctc_number ) {
+            return new WP_REST_Response( array(
+                'success' => false,
+                'errors'  => array( __( 'Please enter a WhatsApp number to enable the chat button.', 'notifier' ) ),
+            ), 200 );
+        }
+
         foreach ( $data as $key => $value ) {
             if ( ! isset( $allowed[ $key ] ) ) {
                 continue;
@@ -334,8 +349,14 @@ class Notifier_Backend {
                 case 'textarea':
                     $value = wp_kses_post( trim( $value ) );
                     break;
+                case 'display_rules':
+                    $value = self::sanitize_ctc_display_rules( is_array( $value ) ? $value : array() );
+                    break;
                 case 'array':
                     $value = is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
+                    if ( ! empty( $def['options'] ) ) {
+                        $value = array_values( array_intersect( $value, array_keys( $def['options'] ) ) );
+                    }
                     break;
                 default:
                     $value = sanitize_text_field( $value );
@@ -785,10 +806,22 @@ class Notifier_Backend {
             'ctc_greeting_text'                 => get_option( 'notifier_ctc_greeting_text', '' ),
             'ctc_button_style'                  => get_option( 'notifier_ctc_button_style', 'default' ),
             'ctc_custom_button_image_url'       => get_option( 'notifier_ctc_custom_button_image_url', '' ),
+            'ctc_position'                      => get_option( 'notifier_ctc_position', 'bottom-right' ),
+            'ctc_offset_x'                      => get_option( 'notifier_ctc_offset_x', 20 ),
+            'ctc_offset_y'                      => get_option( 'notifier_ctc_offset_y', 20 ),
+            'ctc_mobile_position_enable'        => get_option( 'notifier_ctc_mobile_position_enable', 'no' ),
+            'ctc_mobile_position'               => get_option( 'notifier_ctc_mobile_position', 'bottom-right' ),
+            'ctc_mobile_offset_x'               => get_option( 'notifier_ctc_mobile_offset_x', 20 ),
+            'ctc_mobile_offset_y'               => get_option( 'notifier_ctc_mobile_offset_y', 20 ),
+            'ctc_display_rules'                 => self::get_ctc_display_rules_for_ui(),
+            'ctc_devices'                       => get_option( 'notifier_ctc_devices', array_keys( self::get_ctc_device_options() ) ),
             'enable_activity_log'               => get_option( 'notifier_enable_activity_log', 'no' ),
             'wp_enabled_merge_tags'             => get_option( 'notifier_wp_enabled_merge_tags', array() ),
             'wp_enabled_recipient_fields'       => get_option( 'notifier_wp_enabled_recipient_fields', array() ),
             'button_styles'                     => self::get_button_styles(),
+            'ctc_position_options'              => self::get_ctc_position_options(),
+            'ctc_location_options'              => self::get_ctc_location_options(),
+            'ctc_device_options'                => self::get_ctc_device_options(),
         );
     }
 
@@ -801,6 +834,15 @@ class Notifier_Backend {
             'ctc_greeting_text'               => array( 'type' => 'text' ),
             'ctc_button_style'                => array( 'type' => 'select', 'options' => self::get_button_styles(), 'default' => 'default' ),
             'ctc_custom_button_image_url'     => array( 'type' => 'text' ),
+            'ctc_position'                    => array( 'type' => 'select', 'options' => self::get_ctc_position_options(), 'default' => 'bottom-right' ),
+            'ctc_offset_x'                    => array( 'type' => 'number', 'min' => 0 ),
+            'ctc_offset_y'                    => array( 'type' => 'number', 'min' => 0 ),
+            'ctc_mobile_position_enable'      => array( 'type' => 'checkbox' ),
+            'ctc_mobile_position'             => array( 'type' => 'select', 'options' => self::get_ctc_position_options(), 'default' => 'bottom-right' ),
+            'ctc_mobile_offset_x'             => array( 'type' => 'number', 'min' => 0 ),
+            'ctc_mobile_offset_y'             => array( 'type' => 'number', 'min' => 0 ),
+            'ctc_display_rules'               => array( 'type' => 'display_rules' ),
+            'ctc_devices'                     => array( 'type' => 'array', 'options' => self::get_ctc_device_options() ),
             'enable_activity_log'             => array( 'type' => 'checkbox' ),
             'wp_enabled_merge_tags'           => array( 'type' => 'array' ),
             'wp_enabled_recipient_fields'     => array( 'type' => 'array' ),
@@ -815,6 +857,336 @@ class Notifier_Backend {
             'btn-style-3'     => 'Style 3',
             'btn-style-4'     => 'Style 4',
             'btn-custom-image' => 'Add your own image',
+        );
+    }
+
+    public static function get_ctc_position_options() {
+        return array(
+            'bottom-right' => 'Bottom Right',
+            'bottom-left'  => 'Bottom Left',
+            'top-right'    => 'Top Right',
+            'top-left'     => 'Top Left',
+        );
+    }
+
+    // ----------------------------------------
+    // Chat button display rules
+    // ----------------------------------------
+
+    /**
+     * Grouped location options for the display / exclude rule dropdowns (react-select format).
+     *
+     * Rule keys:
+     *  basic-global | basic-singulars | basic-archives
+     *  special-front | special-blog | special-404 | special-search | special-date | special-author
+     *  {post_type}|all | {post_type}|archive | {post_type}|tax|{taxonomy}
+     *  wc-shop | wc-cart | wc-checkout | wc-account | wc-order-received
+     *  specifics  (with items: post-{id}, tax-{term_id}, tax-{term_id}-posts)
+     */
+    public static function get_ctc_location_options() {
+        $groups = array(
+            array(
+                'label'   => 'Basic',
+                'options' => array(
+                    array('value' => 'basic-global',    'label' => 'Entire Website'),
+                    array('value' => 'basic-singulars', 'label' => 'All Singulars'),
+                    array('value' => 'basic-archives',  'label' => 'All Archives'),
+                ),
+            ),
+            array(
+                'label'   => 'Special Pages',
+                'options' => array(
+                    array('value' => 'special-front',  'label' => 'Front Page'),
+                    array('value' => 'special-blog',   'label' => 'Blog / Posts Page'),
+                    array('value' => 'special-404',    'label' => '404 Page'),
+                    array('value' => 'special-search', 'label' => 'Search Results'),
+                    array('value' => 'special-date',   'label' => 'Date Archive'),
+                    array('value' => 'special-author', 'label' => 'Author Archive'),
+                ),
+            ),
+        );
+
+        $has_woo = class_exists('WooCommerce');
+
+        foreach (self::get_ctc_rule_post_types() as $post_type) {
+            $options = array(
+                array('value' => $post_type->name . '|all', 'label' => 'All ' . $post_type->labels->name),
+            );
+
+            // The product archive is the WooCommerce shop page, listed under WooCommerce below.
+            if ($post_type->has_archive && ! ($has_woo && 'product' === $post_type->name)) {
+                $options[] = array('value' => $post_type->name . '|archive', 'label' => $post_type->labels->name . ' Archive');
+            }
+
+            foreach (get_object_taxonomies($post_type->name, 'objects') as $taxonomy) {
+                if (! self::is_ctc_rule_taxonomy($taxonomy)) {
+                    continue;
+                }
+                $options[] = array(
+                    'value' => $post_type->name . '|tax|' . $taxonomy->name,
+                    'label' => 'All ' . $taxonomy->labels->singular_name . ' Archives',
+                );
+            }
+
+            $groups[] = array('label' => $post_type->labels->name, 'options' => $options);
+        }
+
+        if ($has_woo) {
+            $groups[] = array(
+                'label'   => 'WooCommerce',
+                'options' => array(
+                    array('value' => 'wc-shop',           'label' => 'Shop Page'),
+                    array('value' => 'wc-cart',           'label' => 'Cart Page'),
+                    array('value' => 'wc-checkout',       'label' => 'Checkout Page'),
+                    array('value' => 'wc-account',        'label' => 'My Account Page'),
+                    array('value' => 'wc-order-received', 'label' => 'Order Received (Thank You) Page'),
+                ),
+            );
+        }
+
+        $groups[] = array(
+            'label'   => 'Specific Target',
+            'options' => array(
+                array('value' => 'specifics', 'label' => 'Specific Pages / Posts / Taxonomies'),
+            ),
+        );
+
+        return $groups;
+    }
+
+    /**
+     * Flat list of valid rule keys.
+     */
+    public static function get_ctc_location_keys() {
+        $keys = array();
+        foreach (self::get_ctc_location_options() as $group) {
+            foreach ($group['options'] as $option) {
+                $keys[] = $option['value'];
+            }
+        }
+        return $keys;
+    }
+
+    /**
+     * Public, frontend-viewable post types that rules can target.
+     *
+     * @return WP_Post_Type[]
+     */
+    public static function get_ctc_rule_post_types() {
+        $post_types = array();
+        foreach (get_post_types(array('public' => true), 'objects') as $post_type) {
+            if ('attachment' === $post_type->name || ! is_post_type_viewable($post_type)) {
+                continue;
+            }
+            $post_types[] = $post_type;
+        }
+        return $post_types;
+    }
+
+    /**
+     * Whether a taxonomy has frontend archives worth targeting.
+     *
+     * @param WP_Taxonomy $taxonomy
+     */
+    public static function is_ctc_rule_taxonomy($taxonomy) {
+        // Post formats and WooCommerce shipping classes are queryable but have no real archive pages.
+        if (in_array($taxonomy->name, array('post_format', 'product_shipping_class'), true)) {
+            return false;
+        }
+        return is_taxonomy_viewable($taxonomy);
+    }
+
+    public static function get_default_ctc_display_rules() {
+        return array(
+            'display' => array(array('rule' => 'basic-global', 'specifics' => array())),
+            'exclude' => array(),
+        );
+    }
+
+    /**
+     * Validate submitted rules: unknown rule keys and malformed specific items are dropped,
+     * as are "Specific" rows with nothing selected.
+     */
+    public static function sanitize_ctc_display_rules($value) {
+        $valid = self::get_ctc_location_keys();
+        $clean = array('display' => array(), 'exclude' => array());
+
+        foreach (array('display', 'exclude') as $list) {
+            if (empty($value[$list]) || ! is_array($value[$list])) {
+                continue;
+            }
+            foreach ($value[$list] as $row) {
+                $rule = isset($row['rule']) ? sanitize_text_field((string) $row['rule']) : '';
+                if (! in_array($rule, $valid, true)) {
+                    continue;
+                }
+
+                $specifics = array();
+                if ('specifics' === $rule) {
+                    foreach ((array) ($row['specifics'] ?? array()) as $item) {
+                        $item = is_array($item) ? ($item['value'] ?? '') : $item;
+                        if (preg_match('/^(post|tax)-\d+(-posts)?$/', (string) $item)) {
+                            $specifics[] = (string) $item;
+                        }
+                    }
+                    if (empty($specifics)) {
+                        continue;
+                    }
+                }
+
+                $clean[$list][] = array('rule' => $rule, 'specifics' => array_values(array_unique($specifics)));
+            }
+        }
+
+        return $clean;
+    }
+
+    /**
+     * Saved rules (raw keys), falling back to "Entire Website".
+     */
+    public static function get_ctc_display_rules() {
+        $rules = get_option('notifier_ctc_display_rules', null);
+        if (! is_array($rules) || ! isset($rules['display'])) {
+            return self::get_default_ctc_display_rules();
+        }
+        return wp_parse_args($rules, array('display' => array(), 'exclude' => array()));
+    }
+
+    /**
+     * Saved rules with the specific items expanded to {value,label} options for the settings UI.
+     * Items whose post/term no longer exists are left out.
+     */
+    public static function get_ctc_display_rules_for_ui() {
+        $rules = self::get_ctc_display_rules();
+        foreach ($rules as &$rows) {
+            foreach ($rows as &$row) {
+                $row['specifics'] = array_values(array_filter(array_map(array(__CLASS__, 'get_ctc_specific_option'), (array) $row['specifics'])));
+            }
+            unset($row);
+        }
+        unset($rows);
+        return $rules;
+    }
+
+    /**
+     * Build the {value,label} option for a specific item key (post-{id}, tax-{id}, tax-{id}-posts).
+     *
+     * @return array|null Null if the post/term no longer exists.
+     */
+    public static function get_ctc_specific_option($key) {
+        if (! preg_match('/^(post|tax)-(\d+)(-posts)?$/', (string) $key, $m)) {
+            return null;
+        }
+        $id = (int) $m[2];
+
+        if ('post' === $m[1]) {
+            $post = get_post($id);
+            if (! $post || 'trash' === $post->post_status) {
+                return null;
+            }
+            $type  = get_post_type_object($post->post_type);
+            // Plain text: React renders labels as text nodes, so entities from wptexturize/kses would show literally.
+            $title = trim(html_entity_decode(wp_strip_all_tags($post->post_title), ENT_QUOTES, 'UTF-8'));
+            return array(
+                'value' => $key,
+                'label' => ('' !== $title ? $title : '#' . $id) . ' (' . ($type ? $type->labels->singular_name : $post->post_type) . ')',
+            );
+        }
+
+        $term = get_term($id);
+        if (! $term || is_wp_error($term)) {
+            return null;
+        }
+        $taxonomy  = get_taxonomy($term->taxonomy);
+        $tax_label = $taxonomy ? $taxonomy->labels->singular_name : $term->taxonomy;
+        $term_name = html_entity_decode($term->name, ENT_QUOTES, 'UTF-8');
+
+        return array(
+            'value' => $key,
+            'label' => ! empty($m[3])
+                ? sprintf('%s (%s) – all items in it', $term_name, $tax_label)
+                : sprintf('%s (%s) – archive page', $term_name, $tax_label),
+        );
+    }
+
+    /**
+     * Search posts (all public post types) and terms (all public taxonomies) for the
+     * "Specific Pages / Posts / Taxonomies" picker. Returns react-select option groups.
+     */
+    public static function rest_search_content(WP_REST_Request $request) {
+        $query  = trim(sanitize_text_field((string) $request->get_param('q')));
+        $groups = array();
+
+        foreach (self::get_ctc_rule_post_types() as $post_type) {
+            $args = array(
+                'post_type'        => $post_type->name,
+                'post_status'      => 'publish',
+                'posts_per_page'   => 10,
+                'orderby'          => '' !== $query ? 'relevance' : 'title',
+                'order'            => 'ASC',
+                'fields'           => 'ids',
+                'no_found_rows'    => true,
+            );
+            if ('' !== $query) {
+                $args['s'] = $query;
+            }
+            $ids = get_posts($args);
+
+            // Allow pasting an ID directly (published items only, like the search results).
+            if (is_numeric($query) && get_post_type((int) $query) === $post_type->name && 'publish' === get_post_status((int) $query)) {
+                array_unshift($ids, (int) $query);
+            }
+
+            $options = array();
+            foreach (array_unique(array_map('intval', $ids)) as $id) {
+                $option = self::get_ctc_specific_option('post-' . $id);
+                if ($option) {
+                    $options[] = $option;
+                }
+            }
+            if (! empty($options)) {
+                $groups[] = array('label' => $post_type->labels->name, 'options' => $options);
+            }
+        }
+
+        foreach (get_taxonomies(array('public' => true), 'objects') as $taxonomy) {
+            if (! self::is_ctc_rule_taxonomy($taxonomy)) {
+                continue;
+            }
+            $args = array(
+                'taxonomy'   => $taxonomy->name,
+                'hide_empty' => false,
+                'number'     => 10,
+                'orderby'    => 'name',
+            );
+            if ('' !== $query) {
+                $args['search'] = $query;
+            }
+            $terms = get_terms($args);
+            if (is_wp_error($terms) || empty($terms)) {
+                continue;
+            }
+
+            $options = array();
+            foreach ($terms as $term) {
+                foreach (array('tax-' . $term->term_id, 'tax-' . $term->term_id . '-posts') as $key) {
+                    $option = self::get_ctc_specific_option($key);
+                    if ($option) {
+                        $options[] = $option;
+                    }
+                }
+            }
+            $groups[] = array('label' => $taxonomy->labels->name, 'options' => $options);
+        }
+
+        return new WP_REST_Response($groups, 200);
+    }
+
+    public static function get_ctc_device_options() {
+        return array(
+            'desktop' => 'Desktop',
+            'tablet'  => 'Tablet',
+            'mobile'  => 'Mobile',
         );
     }
 

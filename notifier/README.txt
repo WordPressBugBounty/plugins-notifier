@@ -4,7 +4,7 @@ Donate link: https://wanotifier.com
 Tags: whatsapp, whatsapp notification, whatsapp api, whatsapp chat, whatsapp integration
 Requires at least: 6.8
 Tested up to: 6.9
-Stable tag: 3.1.1
+Stable tag: 3.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -137,6 +137,16 @@ WooCommerce integration has been moved to a standalone plugin: [Order & Abandone
 7. Activity log to monitor notification delivery
 
 == Changelog ==
+= 3.2.0 - 2026-10-05 =
+* new: chat button position settings - choose a screen corner and the distance from the edges, with an optional separate position for mobile phones
+* new: chat button display rules - control where the button appears with display and exclusion rules covering the entire website, all singulars or archives, special pages (front, blog, 404, search, date and author), every post type and taxonomy archive including custom post types, WooCommerce pages, and specific pages, posts, products or terms picked by search
+* new: show or hide the chat button on desktop, tablet and mobile
+* update: chat button preview stays in view while scrolling and can switch between desktop and mobile
+* update: admin form controls, buttons and checkboxes use a consistent height and brand colour; settings screens adapt better to phones
+* fix: WhatsApp number is now required when the chat button is enabled, and is validated in the settings form
+* fix: admin screens recover automatically when the REST security nonce expires, and show a clear message when the login session has ended
+* mod: WooCommerce plugin name updated in the Integrations screen
+
 = 3.1.1 - 2026-09-16 =
 * fix: send the site's own REST API URL when connecting, so sites without pretty permalinks (where the REST API lives under /index.php/wp-json/) can complete setup
 
